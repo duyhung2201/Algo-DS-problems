@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cppdbg",
+            "name": "Launch",
+            "request": "launch",
+            "program": "${workspaceFolder}/your_program.exe",
+            "MIDebuggerPath": "/path/to/debugger"
+        }
+    ]
+}
