@@ -24,20 +24,35 @@ impl Solution {
         }
         return true;
     }
+
+    pub fn jump(nums: Vec<i32>) -> i32 {
+        let mut jump_count = 0;
+        let mut pos = 0;
+        let mut max_reach = pos + nums[pos] as usize;
+
+        while pos < nums.len() -1 {            
+            let mut temp = pos; 
+            if max_reach >= nums.len() -1 {
+                return jump_count + 1;
+            }
+
+            for n_pos in pos+1..max_reach+1 {
+                let n_reach = n_pos + nums[n_pos] as usize;
+                if n_reach > max_reach {
+                    max_reach = n_reach;
+                    temp = n_pos;
+                }
+            }
+            pos = temp;
+            jump_count += 1;
+        }
+        
+        return jump_count;
+    }
 }
 
 fn main() {
-    let board = vec![
-        vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
-        vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
-        vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
-        vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
-        vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
-        vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
-        vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
-        vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
-        vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
-    ];
-    let result = Solution::is_valid_sudoku(board);
+    let nums = vec![1,2,3];
+    let result = Solution::jump(nums);
     println!("{:?}", result)
 }
