@@ -1,3 +1,5 @@
+use std::cmp::{self, min};
+
 struct Solution;
 
 impl Solution {
@@ -30,13 +32,13 @@ impl Solution {
         let mut pos = 0;
         let mut max_reach = pos + nums[pos] as usize;
 
-        while pos < nums.len() -1 {            
-            let mut temp = pos; 
-            if max_reach >= nums.len() -1 {
+        while pos < nums.len() - 1 {
+            let mut temp = pos;
+            if max_reach >= nums.len() - 1 {
                 return jump_count + 1;
             }
 
-            for n_pos in pos+1..max_reach+1 {
+            for n_pos in pos + 1..max_reach + 1 {
                 let n_reach = n_pos + nums[n_pos] as usize;
                 if n_reach > max_reach {
                     max_reach = n_reach;
@@ -46,13 +48,33 @@ impl Solution {
             pos = temp;
             jump_count += 1;
         }
-        
+
         return jump_count;
+    }
+
+    pub fn h_index(citations: Vec<i32>) -> i32 {
+        let mut paper_count = vec![0; 5001];
+        let n = citations.len();
+
+        for c in &citations {
+            paper_count[cmp::min(*c as usize, n)] += 1;
+        }
+
+        let mut h_count = 0;
+        for i in (0..n+1).rev() {
+            h_count += paper_count[i];
+
+            if h_count >= i {
+                return i as i32;
+            }
+        }
+
+        return 0;
     }
 }
 
 fn main() {
-    let nums = vec![1,2,3];
-    let result = Solution::jump(nums);
+    let nums = vec![3, 0, 6, 1, 5];
+    let result = Solution::h_index(nums);
     println!("{:?}", result)
 }
