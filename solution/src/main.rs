@@ -52,29 +52,29 @@ impl Solution {
         return jump_count;
     }
 
-    pub fn h_index(citations: Vec<i32>) -> i32 {
-        let mut paper_count = vec![0; 5001];
-        let n = citations.len();
+    pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
+        let n = gas.len();
+        let mut i = 0;
 
-        for c in &citations {
-            paper_count[cmp::min(*c as usize, n)] += 1;
-        }
+        while i < n {
+            let mut gas_tank = 0;
 
-        let mut h_count = 0;
-        for i in (0..n+1).rev() {
-            h_count += paper_count[i];
-
-            if h_count >= i {
-                return i as i32;
+            for j in 0..n {
+                gas_tank += (gas[(i + j) % n] - cost[(i + j) % n]);
+                if gas_tank < 0 {
+                    i = (i + j + 1);
+                    break;
+                } else if j == n - 1 {
+                    return i as i32;
+                }
             }
         }
 
-        return 0;
+        return -1;
     }
 }
 
 fn main() {
-    let nums = vec![3, 0, 6, 1, 5];
-    let result = Solution::h_index(nums);
+    let result = Solution::can_complete_circuit(vec![2, 3, 4], vec![3, 4, 3]);
     println!("{:?}", result)
 }
