@@ -54,23 +54,21 @@ impl Solution {
 
     pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
         let n = gas.len();
-        let mut i = 0;
+        let mut total_tank = 0;
+        let mut curr_tank = 0;
+        let mut start = 0;
 
-        while i < n {
-            let mut gas_tank = 0;
+        for i in 0..n{
+            total_tank += gas[i] - cost[i];
+            curr_tank += gas[i] - cost[i];
 
-            for j in 0..n {
-                gas_tank += (gas[(i + j) % n] - cost[(i + j) % n]);
-                if gas_tank < 0 {
-                    i = (i + j + 1);
-                    break;
-                } else if j == n - 1 {
-                    return i as i32;
-                }
+            if curr_tank < 0{
+                start = i + 1;
+                curr_tank = 0;
             }
         }
 
-        return -1;
+        return if total_tank > 0 {start as i32} else {-1};
     }
 }
 
