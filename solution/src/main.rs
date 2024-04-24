@@ -1,6 +1,53 @@
+use rand::Rng;
 use std::cmp::{self, min};
+use std::collections::{HashMap};
+use std::vec;
+use rand::seq::SliceRandom;
 
 struct Solution;
+
+struct RandomizedSet {
+    map: HashMap<i32, usize>,
+    v: Vec<i32>,
+}
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl RandomizedSet {
+    fn new() -> Self {
+        RandomizedSet {
+            map: HashMap::new(),
+            v: vec![],
+        }
+    }
+
+    fn insert(&mut self, val: i32) -> bool {
+        if self.map.contains_key(&val) {
+            return false;
+        }
+        self.map.insert(val, self.v.len());
+        self.v.push(val);
+        return true;
+    }
+
+    fn remove(&mut self, val: i32) -> bool {
+        match self.map.remove(&val) {
+            Some(index) => {
+                self.v.swap_remove(index);
+                if index < self.v.len() {
+                    self.map.insert(self.v[index], index);
+                }
+                true
+            },
+            None => false
+        }
+    }
+    fn get_random(&self) -> i32 {
+        return *self.v.choose(&mut rand::thread_rng()).unwrap();
+    }
+}
 
 impl Solution {
     pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
@@ -58,21 +105,28 @@ impl Solution {
         let mut curr_tank = 0;
         let mut start = 0;
 
-        for i in 0..n{
+        for i in 0..n {
             total_tank += gas[i] - cost[i];
             curr_tank += gas[i] - cost[i];
 
-            if curr_tank < 0{
+            if curr_tank < 0 {
                 start = i + 1;
                 curr_tank = 0;
             }
         }
 
-        return if total_tank > 0 {start as i32} else {-1};
+        return if total_tank > 0 { start as i32 } else { -1 };
     }
 }
 
 fn main() {
-    let result = Solution::can_complete_circuit(vec![2, 3, 4], vec![3, 4, 3]);
-    println!("{:?}", result)
+    let val = 1;
+    let mut obj = RandomizedSet::new();
+    obj.insert(2);
+    let ret_1: bool = obj.insert(val);
+    println!("{:?}", ret_1);
+    let ret_3: i32 = obj.get_random();
+    println!("{:?}", ret_3);
+    let ret_2: bool = obj.remove(val);
+    println!("{:?}", ret_2);
 }
