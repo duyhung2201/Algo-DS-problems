@@ -3,6 +3,7 @@ use std::vec;
 mod problems;
 
 use problems::p238::product_except_self;
+use problems::p209::min_sub_array_len;
 
 struct Solution;
 
@@ -83,7 +84,7 @@ impl Solution {
 }
 
 fn main() {
-    let nums = vec![1, 2, 3, 4];
-    let res = product_except_self(nums);
-    println!("{:?}", res);
+    let nums = [1,2,3,4,5].to_vec();
+    let res = min_sub_array_len(15, nums);
+    println!("{}", res);
 }
