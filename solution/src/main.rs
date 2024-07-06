@@ -4,14 +4,12 @@ mod problems;
 
 use problems::p238::product_except_self;
 use problems::p209::min_sub_array_len;
+use problems::p232::Stack;
+use problems::p52::max_sub_array;
 
 struct Solution;
 
 
-/**
- * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
- */
 
 impl Solution {
     pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
@@ -81,6 +79,7 @@ impl Solution {
 
         return if total_tank > 0 { start as i32 } else { -1 };
     }
+
 }
 
 fn main() {
