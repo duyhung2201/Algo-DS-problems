@@ -2,14 +2,12 @@ use std::cmp::{self, min};
 use std::vec;
 mod problems;
 
-use problems::p238::product_except_self;
 use problems::p209::min_sub_array_len;
 use problems::p232::Stack;
+use problems::p238::product_except_self;
 use problems::p52::max_sub_array;
 
 struct Solution;
-
-
 
 impl Solution {
     pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
@@ -80,10 +78,55 @@ impl Solution {
         return if total_tank > 0 { start as i32 } else { -1 };
     }
 
+    //p198
+    pub fn rotate(nums: &mut Vec<i32>, k: i32) {
+        if nums.len() == 0 {
+            return;
+        }
+        let n = nums.len();
+        let k = k as usize % n;
+        let mut count = 0;
+        let mut start = 0;
+
+        while count < n {
+            let mut current = start;
+            let mut prev_val = nums[start];
+
+            loop {
+                let idx = (current + k) % n;
+                let current_value = nums[idx];
+                nums[idx] = prev_val;
+                prev_val = current_value;
+                current = idx;
+                count += 1;
+
+                if current == start {
+                    break;
+                }
+            }
+            start += 1;
+        }
+    }
 }
 
 fn main() {
-    let nums = [1,2,3,4,5].to_vec();
+    let nums = [1, 2, 3, 4, 5].to_vec();
     let res = min_sub_array_len(15, nums);
     println!("{}", res);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_rotate() {
+        let mut nums = vec![1, 2, 3, 4, 5, 6, 7];
+        Solution::rotate(&mut nums, 3);
+        assert_eq!(nums, vec![5, 6, 7, 1, 2, 3, 4]);
+
+        nums = vec![-1,-100,3,99];
+        Solution::rotate(&mut nums, 2);
+        assert_eq!(nums, vec![3,99,-1,-100])
+    }
 }

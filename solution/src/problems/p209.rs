@@ -7,9 +7,9 @@ pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {
 
     for end in 0..nums.len() {
         sum += nums[end];
-        while (sum >= target) {
+        while sum >= target {
             res = min(res, end - start + 1);
-            if (res == 1) {
+            if res == 1 {
                 break;
             }
             sum -= nums[start];
