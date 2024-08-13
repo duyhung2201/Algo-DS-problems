@@ -1,4 +1,4 @@
-# Dynamic Programming Solution for Maximum Profit in Stock Trading
+# Dynamic Programming Solution
 
 ## Problem Breakdown
 
