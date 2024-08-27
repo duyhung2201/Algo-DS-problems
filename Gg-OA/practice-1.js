@@ -18,18 +18,26 @@ function solution1(A) {
 	return rows.length;
 }
 
-function assignElement(index, n, currSum1, currSum2, A) {
-	if (index == n) {
-		return Math.abs(currSum1 - currSum2);
-	}
-	let res1 = assignElement(index + 1, n, currSum1 + A[index], currSum2, A);
-	let res2 = assignElement(index + 1, n, currSum1, currSum2 + A[index], A);
-	return Math.min(res1, res2);
-}
-
 function solution2(A) {
 	// Your solution goes here.
-	let res = assignElement(0, A.length, 0, 0, A);
+	const totalSum = A.reduce((acc, curr) => acc + curr, 0);
+	let memo = new Map();
+
+	function assignElement(index, accumulatedSum) {
+		if (index == A.length) {
+			return Math.abs(totalSum - 2 * accumulatedSum);
+		}
+		const key = `${index}-${accumulatedSum}`;
+		if (memo.has(key)) return memo[key];
+		let res1 = assignElement(index + 1, accumulatedSum + A[index]);
+		let res2 = assignElement(index + 1, accumulatedSum);
+		const res = Math.min(res1, res2);
+		memo.set(key, res);
+
+		return res;
+	}
+
+	let res = assignElement(0, 0);
 
 	console.error(
 		'Tip: Use console.error() to write debug messages on the output tab.'
