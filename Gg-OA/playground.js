@@ -1,36 +1,28 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * @param {string} s
+ * @return {boolean}
  */
-var findPeakElement = function (nums) {
-	const n = nums.length;
+var repeatedSubstringPattern = function (s) {
+	const len = s.length;
 
-	if (n < 2) return 0;
+	if (len < 2) return false;
 
-	if (nums[0] > nums[1]) return 0;
-	if (nums[n - 1] > nums[n - 2]) return n - 1;
-
-	let startIdx = 1;
-	let endIdx = n - 2;
-
-	while (startIdx <= endIdx) {
-		let mid = Math.floor((startIdx + endIdx) / 2);
-
-		const adjLeft = nums[mid - 1];
-		const adjRight = nums[mid + 1];
-
-		if (adjLeft < nums[mid] && nums[mid] > adjRight) {
-			return mid;
-		} else if (adjLeft > nums[mid]) {
-			endIdx = mid - 1;
-		} else if (adjRight > nums[mid]) {
-			startIdx = mid + 1;
+	for (let i = 1; i <= Math.ceil(len / 2); i++) {
+		if (len % i !== 0) continue;
+		if (s.slice(0, i).repeat(len / i) === s) {
+			return true;
 		}
 	}
-	return -1;
+	return false;
 };
-console.log(findPeakElement([1, 2, 3, 4, 5]));
-console.log(findPeakElement([1, 2, 3, 4, 5].reverse()));
-console.log(findPeakElement([1, 2, 3, 4, 1]));
-console.log(findPeakElement([1, 2, 1, 3, 5, 6, 4]));
-console.log(findPeakElement([1, 2, 3, 1]));
+
+var repeatedSubstringPatternOpt = function (s) {
+	const double = s + s;
+	return double.slice(1, -1).includes(s);
+};
+
+console.log(repeatedSubstringPatternOpt('abaababaab'));
+console.log(repeatedSubstringPatternOpt('a'));
+console.log(repeatedSubstringPatternOpt('abab'));
+console.log(repeatedSubstringPatternOpt('abcabcabcabcabc'));
+console.log(repeatedSubstringPatternOpt('abcabcabcddabcdabc'));
