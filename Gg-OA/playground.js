@@ -1,21 +1,32 @@
 /**
- * @param {number[]} nums
+ * @param {string[]} emails
  * @return {number}
  */
-var lengthOfLIS = function (nums) {
-	let n = nums.length;
-	let dp = Array(n + 1).fill(1);
+var numUniqueEmails = function (emails) {
+	let set = new Set();
 
-	for (let i = 0; i < nums.length; i++) {
-		for (let j = 0; j < i; j++) {
-			if (nums[j] < nums[i]) {
-				dp[i] = Math.max(dp[i], dp[j] + 1);
-			}
-		}
+	for (const email of emails) {
+		let [local, domain] = email.split('@');
+		let localRefined = local.split('+')[0].replaceAll('.', '');
+
+		set.add(localRefined + '@' + domain);
 	}
-	return Math.max(...dp);
+	return set.size;
 };
 
-console.log(lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
-console.log(lengthOfLIS([0, 1, 0, 3, 2, 3]));
-console.log(lengthOfLIS([7, 7, 7, 7, 7, 7, 7]));
+console.log(
+	numUniqueEmails([
+		'test.email+alex@leetcode.com',
+		'test.email.leet+alex@code.com',
+	])
+);
+console.log(
+	numUniqueEmails([
+		'test.email+alex@leetcode.com',
+		'test.e.mail+bob.cathy@leetcode.com',
+		'testemail+david@lee.tcode.com',
+	])
+);
+console.log(
+	numUniqueEmails(['a@leetcode.com', 'b@leetcode.com', 'c@leetcode.com'])
+);
