@@ -1,28 +1,26 @@
 /**
  * @param {string} s
- * @return {boolean}
+ * @param {number} k
+ * @return {string}
  */
-var repeatedSubstringPattern = function (s) {
-	const len = s.length;
+var licenseKeyFormatting = function (s, k) {
+	let newS = s.split('-').join('').toUpperCase();
+	let len = newS.length;
+	let res = '';
 
-	if (len < 2) return false;
+	if (!len) return '';
 
-	for (let i = 1; i <= Math.ceil(len / 2); i++) {
-		if (len % i !== 0) continue;
-		if (s.slice(0, i).repeat(len / i) === s) {
-			return true;
-		}
+	let firstGrpLen = len % k;
+	if (firstGrpLen) res = newS.slice(0, firstGrpLen) + '-';
+	for (let i = 0; i < Math.floor(len / k); i++) {
+		const startIdx = firstGrpLen + i * k;
+		res += newS.slice(startIdx, startIdx + k) + '-';
 	}
-	return false;
+	return res.slice(0, -1);
 };
 
-var repeatedSubstringPatternOpt = function (s) {
-	const double = s + s;
-	return double.slice(1, -1).includes(s);
-};
+console.log(licenseKeyFormatting('5F3Z-2e-9-w', 4));
+console.log(licenseKeyFormatting('5F3Z-2e-9-wf', 4));
 
-console.log(repeatedSubstringPatternOpt('abaababaab'));
-console.log(repeatedSubstringPatternOpt('a'));
-console.log(repeatedSubstringPatternOpt('abab'));
-console.log(repeatedSubstringPatternOpt('abcabcabcabcabc'));
-console.log(repeatedSubstringPatternOpt('abcabcabcddabcdabc'));
+// Input: s = "5F3Z-2e-9-w", k = 4
+// Output: "5F3Z-2E9W"
