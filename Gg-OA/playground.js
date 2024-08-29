@@ -1,26 +1,26 @@
 /**
- * @param {string} s
- * @param {number} k
- * @return {string}
+ * @param {number[]} fruits
+ * @return {number}
  */
-var licenseKeyFormatting = function (s, k) {
-	let newS = s.split('-').join('').toUpperCase();
-	let len = newS.length;
-	let res = '';
+var totalFruit = function (fruits) {
+	let basket = new Map();
+	let left = 0;
+	let maxFruit = 0;
 
-	if (!len) return '';
+	for (let right = 0; right < fruits.length; right++) {
+		let fruit = fruits[right];
+		basket.set(fruit, (basket.get(fruit) || 0) + 1);
 
-	let firstGrpLen = len % k;
-	if (firstGrpLen) res = newS.slice(0, firstGrpLen) + '-';
-	for (let i = 0; i < Math.floor(len / k); i++) {
-		const startIdx = firstGrpLen + i * k;
-		res += newS.slice(startIdx, startIdx + k) + '-';
+		while (basket.size > 2) {
+			let fruitLeft = fruits[left];
+			left++;
+			let fruitLeftCount = basket.get(fruitLeft) - 1;
+			if (fruitLeftCount) basket.set(fruitLeft, fruitLeftCount);
+			else basket.delete(fruitLeft);
+		}
+		maxFruit = Math.max(maxFruit, right - left + 1);
 	}
-	return res.slice(0, -1);
+	return maxFruit;
 };
-
-console.log(licenseKeyFormatting('5F3Z-2e-9-w', 4));
-console.log(licenseKeyFormatting('5F3Z-2e-9-wf', 4));
-
-// Input: s = "5F3Z-2e-9-w", k = 4
-// Output: "5F3Z-2E9W"
+console.log(totalFruit([1, 2, 1]));
+// console.log(totalFruit([3, 3, 3, 1, 2, 1]));
